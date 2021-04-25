@@ -3,13 +3,15 @@ import {createServer} from 'http';
 import {Server, Socket} from 'socket.io';
 import path from 'path';
 
+import "./database";
+
 import 'reflect-metadata';
 
 import cors from 'cors';
 
 import { routes } from "./routes";
 
-import "./database";
+
 
 const app = express();
 
@@ -28,9 +30,9 @@ app.get("/pages/admin", (request, response)=>{
 const http = createServer(app); //Separando o protocolo http do express
 const io = new Server(http) //iniciando um servidor do protocolo do web socket
 
-io.on("connection", (socket: Socket) => {
-  console.log("Se conectou",socket.id)
-})
+// io.on("connection", (socket: Socket) => {
+//   console.log("Se conectou",socket.id)
+// })
 
 app.use(cors());
 app.use(express.json());

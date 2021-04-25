@@ -25,9 +25,6 @@ class Message {
   @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
-
   constructor(){
     if(!this.id){
       this.id = uuid();

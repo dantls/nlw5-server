@@ -5,14 +5,15 @@ let socket = null;
 document.querySelector("#start_chat").addEventListener("click", (event) => {
   socket = io();
 
-  const chat_help = document.getElementById('chat_help');
+  const chat_help = document.getElementById("chat_help");
   chat_help.style.display = "none";
 
-  const chat_in_support = document.getElementById('chat_in_support');
+  const chat_in_support = document.getElementById("chat_in_support");
   chat_in_support.style.display = "block";
 
-  const text = document.getElementById('txt_help').value;  
-  const email = document.getElementById('email').value;
+  const text = document.getElementById('txt_help').value; 
+   
+  const email = document.getElementById("email").value;
   emailUser = email;
 
  
@@ -86,4 +87,6 @@ document.querySelector("#send_message_button").addEventListener("click",(event) 
     email: emailUser
   })
   document.getElementById("messages").innerHTML  += rendered;
+
+  text.value = ''
 })

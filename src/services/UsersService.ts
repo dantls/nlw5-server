@@ -3,7 +3,6 @@ import { User } from "../entities/User";
 import { UsersRepository } from "../repositories/UsersRepository";
 
 interface IUsersCreateDTO{
-  username: string;
   email: string;
 }
 
@@ -14,7 +13,7 @@ class UsersService {
     this.usersRepository = getCustomRepository(UsersRepository);
   }
 
-  async create({username, email}: IUsersCreateDTO){
+  async create({ email}: IUsersCreateDTO){
 
     const userAlreadyExists = await this.usersRepository.findOne({
       email
@@ -25,7 +24,7 @@ class UsersService {
     }
 
     const user = this.usersRepository.create({
-      username, email
+     email
     })
     
     await this.usersRepository.save(user);
@@ -35,11 +34,11 @@ class UsersService {
   }
 
   async findByEmail(email: string){
-    const userAlreadyExists = await this.usersRepository.findOne({
+    const user = await this.usersRepository.findOne({
       email
     })
 
-    return userAlreadyExists
+    return user
 
   }
   

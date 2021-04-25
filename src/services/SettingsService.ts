@@ -43,20 +43,21 @@ class SettingsService {
   }
 
   async update(username: string, chat: boolean){
-    const settings = await this.settingsRepository.findOne({
-      username
-    })
-    settings.chat = !settings.chat 
+    //await this.settingsRepository.findOne({
+    //   username
+    // })
+    // settings.chat = !settings.chat 
 
-    await this.settingsRepository.save(settings)
+    // await this.settingsRepository.save(settings)
 
-    // const settings = await this.settingsRepository.createQueryBuilder().
-    //   update(Setting)
-    //   .set({chat})
-    //   .where("username= :username", {
-    //     username
-    //   })
-    //   .execute()
+    await this.settingsRepository
+    .createQueryBuilder().
+      update(Setting)
+      .set({chat})
+      .where("username= :username", {
+        username
+      })
+      .execute()
 
 
   }

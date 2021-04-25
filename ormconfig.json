@@ -1,17 +1,10 @@
+
 {
-  "type": "postgres",
-  "host":"localhost",
-  "port": 5432,
-  "username":"postgres",
-  "password":"master",
-  "database": "nextlevel5",
-  "entities": [
-    "./src/entities/*.ts"
-  ],
-  "migrations": [
-    "./src/database/migrations/**.ts"
-  ],
+  "type": "sqlite",
+  "database": "./src/database/database.sqlite",
+  "migrations": ["./src/database/migrations/**.ts"],
+  "entities": ["./src/entities/*.ts"],
   "cli": {
-    "migrationsDir":"./src/database/migrations"
+    "migrationsDir": "./src/database/migrations"
   }
 }

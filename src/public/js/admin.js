@@ -2,9 +2,9 @@ const socket = io();
 
 let connectionsUsers = [];
 
+let connectionInSupport = []; 
+
 socket.on("admin_list_all_users", connections => {
-  
-  console.log(connections)
 
   connectionsUsers = connections;
   
@@ -26,6 +26,8 @@ function call(id) {
   const connection = connectionsUsers.find(
     connection => connection.socket_id === id
   );
+
+  connectionInSupport.push(connection);
 
   const template = document.getElementById("admin_template").innerHTML;
 
@@ -55,12 +57,11 @@ function call(id) {
       if(!message.admin_id){
         createDiv.className = 'admin_message_client';
 
-        createDiv.innerHTML += `<span>${connection.user.email} </span>`;
+        createDiv.innerHTML = `<span>${connection.user.email} </span>`;
         createDiv.innerHTML += `<span>${message.text} </span>`;
         createDiv.innerHTML += `<span class="admin_date">${dayjs(message.created_at)
         .format("DD/MM/YYYY HH:mm:ss")} </span>`;
       }else{
-        createDiv.className = 'admin_message_admin';
         
         createDiv.className = 'admin_message_admin';
         createDiv.innerHTML = `Atendente: <span>${message.text} </span>`;
@@ -99,11 +100,9 @@ function sendMessage(id){
 }
 
 socket.on("admin_receive_message", data => {
-  console.log(connectionsUsers)
   
-  
-  const connection = connectionsUsers.find(connection => connection.socket_id === data.socket_id )
-  console.log(connection)
+  const connection = connectionInSupport.find(connection => connection.socket_id === data.socket_id )
+
   const divMessages = document.getElementById(`allMessages${connection.user_id}`)
 
   const createDiv = document.createElement("div");

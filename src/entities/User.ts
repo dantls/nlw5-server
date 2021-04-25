@@ -7,8 +7,6 @@ class User {
   @PrimaryColumn()
   id: string;
 
-  @Column()
-  username: string;
 
   @Column()
   email: string;
@@ -16,8 +14,6 @@ class User {
   @CreateDateColumn()
   created_at: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
 
   constructor(){
     if(!this.id){
