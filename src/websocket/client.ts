@@ -12,7 +12,7 @@ interface IParams {
 io.on("connect", (socket)=>{
   
 
-  const connectionService = new ConnectionsService();
+  const connectionsService = new ConnectionsService();
   const messagesService = new MessagesService();
   const usersService = new UsersService();
   
@@ -26,30 +26,28 @@ io.on("connect", (socket)=>{
     if(!userExists){
       const user = await usersService.create({username:email, email})
       
-      user_id = user.id;
-
-      const connection = await connectionService.create({
+      await connectionsService.create({
         socket_id,
-        user_id
+        user_id: user.id
       })
       
-      
+      user_id = user.id;
 
     }else {
       
       user_id = userExists.id;
 
-      const connection = await connectionService.findByUserId(userExists.id);
+      const connection = await connectionsService.findByUserId(userExists.id);
 
       if(!connection){
-        await connectionService.create({
+        await connectionsService.create({
           socket_id,
           user_id
         })
       }else{
         connection.socket_id = socket_id;
 
-        await connectionService.create(connection)
+        await connectionsService.create(connection)
       }
     }
 
@@ -62,5 +60,27 @@ io.on("connect", (socket)=>{
 
     socket.emit("client_list_all_messages", allMessages);
 
+    const allUsers = await connectionsService.findAllWithoutAdmin();
+
+    io.emit("admin_list_all_users", allUsers);
+
+  });
+
+  socket.on("client_send_to_admin", async(params) => {
+    const { text, socket_admin_id } = params;
+
+    const socket_id = socket.id
+
+    const {user_id} = await connectionsService.findBySocketID(socket_id);
+
+    const message = await messagesService.create({
+      text,
+      user_id
+    })
+
+    io.to(socket_admin_id).emit("admin_receive_message",{
+      message,
+      socket_id
+    })
   })
 })
